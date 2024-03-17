@@ -12,12 +12,12 @@ public class MemberDTO {
     private Long id;
     private String userId;
     private String password;
-    private String company;
+    private String memo;
 
-    public MemberDTO(Long id, String userId, String company) {
+    public MemberDTO(Long id, String userId, String memo) {
         this.id = id;
         this.userId = userId;
-        this.company = company;
+        this.memo = memo;
     }
 
 

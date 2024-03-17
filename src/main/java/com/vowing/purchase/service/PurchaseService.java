@@ -176,4 +176,6 @@ public class PurchaseService {
     public boolean isValidMemberId(Long memberId) {
         return memberRepository.findById(memberId).isPresent();
     }
+
+
 }

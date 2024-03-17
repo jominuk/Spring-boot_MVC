@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,46 +29,22 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     /**
-     * 회원 목록
-     * @return 회원 목록
-     */
-
-    @Transactional
-    public List<MemberDTO> memberList() {
-        List<MemberEntity> memberEntityList = memberRepository.findAll();
-
-        return memberEntityList.stream()
-                .map(MemberEntity::toValueObject)
-                .collect(Collectors.toList());
-    }
-
-
-
-    /**
      * 회원 페이징 처리
      * @param pageable MemberDTO
      * @return 회원 각 페이지 인원
      */
-
-    /*
     @Transactional
     public Page<MemberDTO> paging(Pageable pageable) {
         int page = pageable.getPageNumber() ;
-        int pageLimit = 3;
+        int pageLimit = 10;
 
         Page<MemberEntity> memberEntities =
                 memberRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
         Page<MemberDTO> memberDTO = memberEntities.map(
-                member -> new MemberDTO(member.getId(), member.getUserId(), member.getCompany())
+                member -> new MemberDTO(member.getId(), member.getUserId(), member.getPassword(), member.getMemo())
         );
         return memberDTO;
-
     }
-
-     */
-
-
-
 
     /**
      * 회원 등록
@@ -78,8 +55,9 @@ public class MemberService {
     public MemberDTO memberSave(MemberDTO dto) {
         final var entity = new MemberEntity();
         entity.setUserId(dto.getUserId());
-        entity.setPassword(hashPassword(dto.getPassword()));
-        entity.setCompany(dto.getCompany());
+        entity.setPassword(dto.getPassword());
+        //entity.setPassword(hashPassword(dto.getPassword()));
+        entity.setMemo(dto.getMemo());
         return memberRepository.save(entity).toValueObject();
     }
 
@@ -95,9 +73,8 @@ public class MemberService {
                 .findById(id)
                 .orElseThrow(UserNotFound::new);
 
-        entity.setUserId(dto.getUserId());
-        entity.setPassword(hashPassword(dto.getPassword()));
-        entity.setCompany(dto.getCompany());
+        entity.setPassword(dto.getPassword());
+        entity.setMemo(dto.getMemo());
 
         return memberRepository.save(entity).toValueObject();
     }

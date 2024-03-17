@@ -14,5 +14,4 @@ public class PurchaseDTO {
     private String addressUrl;
     private Long counts;
     private String previewUrl;
-
 }

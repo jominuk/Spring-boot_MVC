@@ -36,15 +36,15 @@ public class MemberEntity {
     /**
      * 회원 회사
      */
-    @Column(name = "company", nullable = false)
-    private String company;
+    @Column(name = "memo")
+    private String memo;
 
     public MemberDTO toValueObject() {
         return new MemberDTO(
                 this.getId(),
                 this.getUserId(),
                 this.getPassword(),
-                this.getCompany()
+                this.getMemo()
         );
     }
 }
